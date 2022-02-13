@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  target_1:
+    build: .
+    expose:
+      - 9997
+    command: node app.js target
+  target_2:
+    build: .
+    expose:
+      - 9997
+    command: node app.js target
+  splitter:
+    build: .
+    expose:
+      - 9997
+    depends_on:
+      - target_1
+      - target_2
+    command: node app.js splitter
+  agent:
+    build: .
+    depends_on:
+      - splitter
+    command: node app.js agent
+    
