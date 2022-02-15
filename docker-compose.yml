@@ -23,4 +23,3 @@ services:
     depends_on:
       - splitter
     command: node app.js agent
-    

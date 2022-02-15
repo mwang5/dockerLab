@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  source:
+    depends_on:
+      - splitter
+    build:
+      context: ./source/
+    volumes:
+      - "./agent/inputs:/data/"
+  target_1:
+    build: .
+    expose:
+      - 9997
+    command: node app.js target
+  target_2:
+    build: .
+    expose:
+      - 9997
+    command: node app.js target
+  splitter:
+    build: .
+    expose:
+      - 9997
+    depends_on:
+      - target_1
+      - target_2
+    command: node app.js splitter
