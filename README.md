@@ -151,13 +151,24 @@ To run the test:
 ```
 $ python test.py input output
 ```
-
-A bash script [_run.sh_](run.sh) is used to set up the environment, copy events logs to local and run input/output validation above. The script measures the agent process running time as basic performance evaluation of the throughput. Few benchmark
-Attempt | 6M row | 8M row | 10M row | 12M row | 14M row |
+## Performance 
+A bash script [_run.sh_](run.sh) is used to 
+1. set up the environment.
+2. copy events logs to local.
+3. run input/output validation python on local using target events logs. 
+4. The script measures the agent process running time as basic performance evaluation of the throughput. 
+5. Few benchmarks:
+Attempt | 6M row | 8M row | 10M row | 12M row | 15M row |
 --- | --- | --- | --- | --- | --- |
-Seconds | 2s | 3s | 3s |  |  |
-
+Seconds | 2s | 3s | 3s | 4s | 5s |
+6. tear down application
+   
 to run the script
 ```
 ./run.sh
 ```
+
+##Issues:
+1. I am not able to get the agent container performance metrics such as CPU and memory. I want to utilze 'docker stats' to get the info. But the container exit pretty fast.
+2. The CI/CD is not implemented as required, but using bash to do the deploy test, teardown.
+3. I could create Dockerfile under each service instead of creating a general image for all.

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#function getrepo() {
+#  git clone <repo>
+#}
+
 function clean_bench(){
   docker-compose down -v
 }
