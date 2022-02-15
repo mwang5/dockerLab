@@ -32,34 +32,6 @@ Project structure:
 └── run.sh
 ```
 
-[_docker-compose.yaml_](docker-compose.yaml)
-```
-version: '3.8'
-services:
-  target_1:
-    build: .
-    expose:
-      - 9997
-    command: node app.js target
-  target_2:
-    build: .
-    expose:
-      - 9997
-    command: node app.js target
-  splitter:
-    build: .
-    expose:
-      - 9997
-    depends_on:
-      - target_1
-      - target_2
-    command: node app.js splitter
-  agent:
-    build: .
-    depends_on:
-      - splitter
-    command: node app.js agent
-```
 [_Dockerfile_](Dockerfile)
 ```
 FROM node:14 as demoapp
@@ -69,7 +41,7 @@ COPY package*.json ./
 RUN npm install 
 COPY . .
 ```
-The Dockerfile create the image for the services
+The Dockerfile create a general image for the services
 
 [_docker-compose.yaml_](docker-compose.yaml)
 ```
