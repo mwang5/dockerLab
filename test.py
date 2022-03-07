@@ -24,8 +24,6 @@ def compareline(file1, file2):
     return True
 
 class Test(unittest.TestCase):
-    input = 'test1.log'
-    output = 'test2.log'
 
     def test_fileHashMatch(self):
         self.assertEqual(md5(self.input), md5(self.output), 'input/output DO NOT Match')

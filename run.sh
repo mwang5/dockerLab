@@ -37,4 +37,4 @@ aftertime=$(date +%s)
 echo "Load file took $(($aftertime-$beforetime)) seconds"
 copyevents
 run_test
-clean_bench
+#clean_bench

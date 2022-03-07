@@ -23,3 +23,62 @@ services:
     depends_on:
       - splitter
     command: node app.js agent
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    expose: 
+      - 9090
+    ports: 
+      - 9090:9090
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    restart: unless-stopped
+    command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
+    links:
+      - cadvisor:cadvisor
+      - node-exporter:node-exporter
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    container_name: cadvisor
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    restart: unless-stopped
+
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    command:
+      - '--path.rootfs=/rootfs'
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: grafana
+    links:
+      - prometheus:prometheus
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+
+volumes:
+  prometheus-data:
+  grafana-data:  
